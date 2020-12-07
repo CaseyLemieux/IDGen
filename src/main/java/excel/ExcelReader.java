@@ -1,2 +1,4 @@
-package excel;public class ExcelReader {
+package excel;
+
+public class ExcelReader {
 }

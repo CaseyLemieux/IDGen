@@ -1,2 +1,4 @@
-package pdf;public class PDFReader {
+package pdf;
+
+public class PDFAdapter {
 }

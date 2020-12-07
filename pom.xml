@@ -7,6 +7,32 @@
     <groupId>org.lxsoftware</groupId>
     <artifactId>IDGen</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.21</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+        <!-- For Creating QR Codes -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <!-- For Reading from Excel Files -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+    </dependencies>
 
 </project>
