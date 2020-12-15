@@ -2,7 +2,7 @@ package student;
 
 public class Student {
 
-    private String userID;
+    private String studentID;
     private String userName;
     private String email;
     private String displayName;
@@ -12,20 +12,20 @@ public class Student {
 
     }
 
-    public Student(String userID, String userName, String email, String displayName, String qrCode){
-        this.userID = userID;
+    public Student(String studentID, String userName, String email, String displayName, String qrCode){
+        this.studentID = studentID;
         this.userName = userName;
         this.email = email;
         this.displayName = displayName;
         this.qrCode = qrCode;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getStudentID() {
+        return studentID;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
     }
 
     public String getUserName() {
