@@ -3,32 +3,78 @@ package driver;
 
 
 import database.DatabaseHelper;
+import tablemodel.StudentTableModel;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 
 public class Driver extends JFrame {
 
-    JButton btnClasslinkFile;
-    JButton btnFocusFile;
-    JTextField txtClasslink;
-    JTextField txtFocusFile;
-    JLabel lblClasslink;
-    JLabel lblFocus;
-    JPanel topPanel;
-    JPanel tablePanel;
-    JPanel bottomPanel;
-
+    private JButton btnClasslinkFile;
+    private JButton btnFocusFile;
+    private JButton btnExportSelected;
+    private JButton btnExportGrade;
+    private JTextField txtClasslink;
+    private JTextField txtFocusFile;
+    private JLabel lblClasslink;
+    private JLabel lblFocus;
+    private JLabel lblTotalStudents;
+    private JLabel lblNumberOfStudents;
+    private JPanel topPanel;
+    private JPanel tablePanel;
+    private JPanel bottomPanel;
+    private JTable studentTable;
+    private JFileChooser fileChooser;
+    private File classLinkFile;
+    private File focusFile;
+    private DatabaseHelper databaseHelper;
 
 
     JFrame frame;
     Driver(){
+        fileChooser = new JFileChooser();
+        databaseHelper = new DatabaseHelper();
+        initTopPanel();
+        initTablePanel();
+        initBottomPanel();
+        add(topPanel, BorderLayout.NORTH);
+        add(tablePanel, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
+        setTitle("Student ID Generator");
+        pack();
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        setLayout(null);
+        setVisible(true);
+    }
+
+    private void initTopPanel(){
+        //Create panel, labels, and text field.
         topPanel = new JPanel();
-        txtClasslink = new JTextField(25);
-        txtFocusFile = new JTextField(25);
-        btnClasslinkFile = new JButton("Browse");
-        btnFocusFile = new JButton("Browse");
         lblClasslink = new JLabel("ClassLink QR Code File:");
         lblFocus = new JLabel("Focus ID PDF File");
+        txtClasslink = new JTextField(30);
+        txtFocusFile = new JTextField(30);
+
+        //Create buttons and add their onClick Actions
+        btnClasslinkFile = new JButton("Browse");
+        btnClasslinkFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                chooseFile(e);
+            }
+        });
+        btnFocusFile = new JButton("Browse");
+        btnFocusFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                chooseFile(e);
+            }
+        });
+        //Add all of the componets to the topPanel
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(lblClasslink);
         topPanel.add(txtClasslink);
@@ -36,12 +82,49 @@ public class Driver extends JFrame {
         topPanel.add(lblFocus);
         topPanel.add(txtFocusFile);
         topPanel.add(btnFocusFile);
-        add(topPanel);
+    }
 
-        pack();
-        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setLayout(null);
-        setVisible(true);
+    private void initTablePanel(){
+        StudentTableModel tableModel = new StudentTableModel(databaseHelper.getStudents());
+        studentTable = new JTable(tableModel);
+        studentTable.getTableHeader().setReorderingAllowed(false);
+        studentTable.getTableHeader().setResizingAllowed(false);
+        studentTable.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(studentTable);
+        tablePanel = new JPanel(new GridLayout());
+        tablePanel.add(scrollPane);
+    }
+
+    private void initBottomPanel(){
+        bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
+        btnExportGrade = new JButton("Export Grade Level");
+        btnExportSelected = new JButton("Export Selected Student");
+        lblNumberOfStudents = new JLabel("Total Students: ");
+        lblTotalStudents = new JLabel("9 ");
+        bottomPanel.add(lblNumberOfStudents);
+        bottomPanel.add(lblTotalStudents);
+        bottomPanel.add(Box.createGlue());
+        bottomPanel.add(btnExportGrade);
+        bottomPanel.add(btnExportSelected);
+
+    }
+
+    private void chooseFile(ActionEvent event){
+        if(event.getSource() == btnClasslinkFile){
+            int value = fileChooser.showOpenDialog(Driver.this);
+            if(value == JFileChooser.APPROVE_OPTION){
+                classLinkFile = fileChooser.getSelectedFile();
+                txtClasslink.setText(classLinkFile.getAbsolutePath());
+            }
+        }
+        else if(event.getSource() == btnFocusFile){
+            int value = fileChooser.showOpenDialog(Driver.this);
+            if(value == JFileChooser.APPROVE_OPTION){
+                focusFile = fileChooser.getSelectedFile();
+                txtFocusFile.setText(focusFile.getAbsolutePath());
+            }
+        }
     }
 
 

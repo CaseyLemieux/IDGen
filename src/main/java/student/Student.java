@@ -7,16 +7,18 @@ public class Student {
     private String email;
     private String displayName;
     private String qrCode;
+    private String grade;
 
     public Student(){
 
     }
 
-    public Student(String studentID, String userName, String email, String displayName, String qrCode){
+    public Student(String studentID, String userName, String email, String displayName, String grade, String qrCode){
         this.studentID = studentID;
         this.userName = userName;
         this.email = email;
         this.displayName = displayName;
+        this.grade= grade;
         this.qrCode = qrCode;
     }
 
@@ -58,5 +60,13 @@ public class Student {
 
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 }
