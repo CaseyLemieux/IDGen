@@ -3,6 +3,7 @@ package driver;
 
 
 import database.DatabaseHelper;
+import student.Student;
 import tablemodel.StudentTableModel;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ public class Driver extends JFrame {
     private JButton btnFocusFile;
     private JButton btnExportSelected;
     private JButton btnExportGrade;
+    private JButton btnloadStudents;
     private JTextField txtClasslink;
     private JTextField txtFocusFile;
     private JLabel lblClasslink;
@@ -32,12 +34,14 @@ public class Driver extends JFrame {
     private File classLinkFile;
     private File focusFile;
     private DatabaseHelper databaseHelper;
+    private ArrayList<Student> students;
 
 
     JFrame frame;
     Driver(){
         fileChooser = new JFileChooser();
         databaseHelper = new DatabaseHelper();
+        students = databaseHelper.getStudents();
         initTopPanel();
         initTablePanel();
         initBottomPanel();
@@ -85,7 +89,7 @@ public class Driver extends JFrame {
     }
 
     private void initTablePanel(){
-        StudentTableModel tableModel = new StudentTableModel(databaseHelper.getStudents());
+        StudentTableModel tableModel = new StudentTableModel(students);
         studentTable = new JTable(tableModel);
         studentTable.getTableHeader().setReorderingAllowed(false);
         studentTable.getTableHeader().setResizingAllowed(false);
@@ -100,13 +104,17 @@ public class Driver extends JFrame {
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
         btnExportGrade = new JButton("Export Grade Level");
         btnExportSelected = new JButton("Export Selected Student");
+        btnloadStudents = new JButton("Load Students");
         lblNumberOfStudents = new JLabel("Total Students: ");
         lblTotalStudents = new JLabel("9 ");
         bottomPanel.add(lblNumberOfStudents);
         bottomPanel.add(lblTotalStudents);
         bottomPanel.add(Box.createGlue());
-        bottomPanel.add(btnExportGrade);
+        //JPanel buttonPanel = new JPanel();
+        bottomPanel.add(btnloadStudents);
         bottomPanel.add(btnExportSelected);
+        bottomPanel.add(btnExportGrade);
+        //bottomPanel.add(buttonPanel);
 
     }
 
@@ -127,6 +135,17 @@ public class Driver extends JFrame {
         }
     }
 
+    private void exportSelected(){
+
+    }
+
+    private void exportGrade(){
+
+    }
+
+    private void loadStudents(){
+
+    }
 
     public static void main(String[] args){
         Driver driver = new Driver();

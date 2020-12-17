@@ -40,7 +40,7 @@ public class DatabaseHelper {
         }
     }
 
-    public void addStudent(Student student){
+    private void addStudent(Student student){
 
     }
 
@@ -48,4 +48,6 @@ public class DatabaseHelper {
         ArrayList<Student> students = new ArrayList<>();
         return students;
     }
+
+
 }
