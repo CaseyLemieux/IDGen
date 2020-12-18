@@ -105,6 +105,12 @@ public class Driver extends JFrame {
         btnExportGrade = new JButton("Export Grade Level");
         btnExportSelected = new JButton("Export Selected Student");
         btnloadStudents = new JButton("Load Students");
+        btnloadStudents.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadStudents();
+            }
+        });
         lblNumberOfStudents = new JLabel("Total Students: ");
         lblTotalStudents = new JLabel("9 ");
         bottomPanel.add(lblNumberOfStudents);
@@ -144,7 +150,7 @@ public class Driver extends JFrame {
     }
 
     private void loadStudents(){
-
+        databaseHelper.loadStudents(classLinkFile, focusFile);
     }
 
     public static void main(String[] args){
