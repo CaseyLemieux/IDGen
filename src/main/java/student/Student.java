@@ -3,23 +3,25 @@ package student;
 public class Student {
 
     private String studentID;
-    private String userName;
+    private String firstName;
+    private String lastName;
     private String email;
     private String displayName;
     private String qrCode;
-    private String grade;
+    private byte[] idPic;
 
     public Student(){
 
     }
 
-    public Student(String studentID, String userName, String email, String displayName, String grade, String qrCode){
+    public Student(String studentID, String firstName, String lastName, String email, String displayName, String qrCode, byte[] idPic){
         this.studentID = studentID;
-        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.displayName = displayName;
-        this.grade= grade;
         this.qrCode = qrCode;
+        this.idPic = idPic;
     }
 
     public String getStudentID() {
@@ -30,12 +32,20 @@ public class Student {
         this.studentID = studentID;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -62,16 +72,16 @@ public class Student {
         this.qrCode = qrCode;
     }
 
-    public String getGrade() {
-        return grade;
+    public byte[] getIdPic() {
+        return idPic;
     }
 
-    public void setGrade(String grade) {
-        this.grade = grade;
+    public void setIdPic(byte[] idPic) {
+        this.idPic = idPic;
     }
 
     @Override
     public String toString(){
-        return userName + " " + displayName + " " + qrCode;
+        return email + " " + firstName + " " + lastName;
     }
 }

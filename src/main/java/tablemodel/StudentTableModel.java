@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class StudentTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"Student ID", "Username", "Email", "Display Name", "Grade", "QR Code"};
+    private String[] columnNames = {"Student ID", "First Name", "Last Name", "Email", "Display Name", "QR Code", "ID Bytes"};
     private ArrayList<Student> students;
 
     public StudentTableModel(ArrayList<Student> students){
@@ -22,6 +22,10 @@ public class StudentTableModel extends AbstractTableModel {
         return columnNames.length;
     }
 
+    public void tableUpdated(){
+        this.fireTableStructureChanged();
+    }
+
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object object = null;
         if(columnIndex == 0){
@@ -29,24 +33,28 @@ public class StudentTableModel extends AbstractTableModel {
             object = students.get(rowIndex).getStudentID();
         }
         else if(columnIndex == 1){
-            //Username
-            object = students.get(rowIndex).getUserName();
+            //First Name
+            object = students.get(rowIndex).getFirstName();
         }
         else if(columnIndex == 2){
+            //Last Name
+            object = students.get(rowIndex).getLastName();
+        }
+        else if(columnIndex == 3){
             //Email
             object = students.get(rowIndex).getEmail();
         }
-        else if(columnIndex == 3){
+        else if(columnIndex == 4){
             //Display Name
             object = students.get(rowIndex).getDisplayName();
-        }
-        else if(columnIndex == 4){
-            //Grade
-            object = students.get(rowIndex).getGrade();
         }
         else if(columnIndex == 5){
             //QR Code
             object = students.get(rowIndex).getQrCode();
+        }
+        else if(columnIndex == 6){
+            //ID Bytes
+            object = students.get(rowIndex).getIdPic();
         }
         return object;
     }

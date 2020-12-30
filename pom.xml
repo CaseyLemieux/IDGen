@@ -75,9 +75,17 @@
             <artifactId>derbyshared</artifactId>
             <version>10.15.2.0</version>
         </dependency>
-
-
-
+        <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.3</version>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>

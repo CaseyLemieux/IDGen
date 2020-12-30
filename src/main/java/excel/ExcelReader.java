@@ -35,7 +35,7 @@ public class ExcelReader {
         return true;
     }
 
-    public ArrayList<Student> getStudents(){
+    public ArrayList<Student> getStudentsQRData(){
         ArrayList<Student> students = new ArrayList<>();
         Iterator<Row> iterator = sheet.iterator();
         //Iterate through rows
@@ -55,9 +55,6 @@ public class ExcelReader {
                         case STRING:
                             int col = address.getColumn();
                             switch (col){
-                                case 1:
-                                    student.setUserName(cell.getStringCellValue());
-                                    break;
                                 case 2:
                                     student.setEmail(cell.getStringCellValue());
                                     break;
