@@ -3,6 +3,7 @@ package driver;
 
 
 import database.DatabaseHelper;
+import pdf.PDFAdapter;
 import student.Student;
 import tablemodel.StudentTableModel;
 
@@ -25,6 +26,8 @@ public class Driver extends JFrame {
     private JPanel tablePanel;
     private JPanel bottomPanel;
     private StudentTableModel tableModel;
+    private JTable studentTable;
+    private JScrollPane scrollPane;
     private final JFileChooser fileChooser;
     private File classLinkFile;
     private File focusFile;
@@ -32,8 +35,6 @@ public class Driver extends JFrame {
     private final DatabaseHelper databaseHelper;
     private ArrayList<Student> students;
 
-
-    JFrame frame;
     Driver(){
         fileChooser = new JFileChooser();
         databaseHelper = new DatabaseHelper();
@@ -76,7 +77,7 @@ public class Driver extends JFrame {
                 tableModel.tableUpdated();
             }
         });
-        //Add all of the componets to the topPanel
+        //Add all of the components to the topPanel
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(lblClasslink);
         topPanel.add(txtClasslink);
@@ -88,11 +89,11 @@ public class Driver extends JFrame {
 
     private void initTablePanel(){
         tableModel = new StudentTableModel(students);
-        JTable studentTable = new JTable(tableModel);
+        studentTable = new JTable(tableModel);
         studentTable.getTableHeader().setReorderingAllowed(false);
         studentTable.getTableHeader().setResizingAllowed(false);
         studentTable.setFillsViewportHeight(true);
-        JScrollPane scrollPane = new JScrollPane(studentTable);
+        scrollPane = new JScrollPane(studentTable);
         tablePanel = new JPanel(new GridLayout());
         tablePanel.add(scrollPane);
     }
@@ -103,6 +104,10 @@ public class Driver extends JFrame {
         JButton btnExportGrade = new JButton("Export Grade Level");
         JButton btnExportSelected = new JButton("Export Selected Student");
         JButton btnloadStudents = new JButton("Load Students");
+        JLabel lblNumberOfStudents = new JLabel("Total Students: ");
+        JLabel lblTotalStudents = new JLabel(databaseHelper.getNumberOfStudents() + " ");
+        JLabel lblStudentFile = new JLabel("Student Info File: ");
+        txtStudentFile = new JTextField(30);
         btnStudentFile = new JButton("Browse");
         btnStudentFile.addActionListener(new ActionListener() {
             @Override
@@ -115,29 +120,29 @@ public class Driver extends JFrame {
             public void actionPerformed(ActionEvent e) {
                databaseHelper.loadStudents(studentsFile);
                tableModel.tableUpdated();
+               studentTable.repaint();
+              //bottomPanel.repaint();
+                lblTotalStudents.setText(databaseHelper.getNumberOfStudents() + " ");
+                bottomPanel.repaint();
+               repaintPanel();
             }
         });
         btnExportSelected.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Student student = tableModel.getStudent(studentTable.getSelectedRow());
+                PDFAdapter adapter = new PDFAdapter();
+                adapter.createPDFFile(student);
             }
         });
-        JLabel lblNumberOfStudents = new JLabel("Total Students: ");
-        JLabel lblTotalStudents = new JLabel(databaseHelper.getNumberOfStudets() + " ");
-        JLabel lblStudentFile = new JLabel("Student Info File: ");
-        txtStudentFile = new JTextField(30);
         bottomPanel.add(lblNumberOfStudents);
         bottomPanel.add(lblTotalStudents);
         bottomPanel.add(lblStudentFile);
         bottomPanel.add(txtStudentFile);
         bottomPanel.add(btnStudentFile);
-        //bottomPanel.add(Box.createGlue());
-        //JPanel buttonPanel = new JPanel();
         bottomPanel.add(btnloadStudents);
         bottomPanel.add(btnExportSelected);
         bottomPanel.add(btnExportGrade);
-        //bottomPanel.add(buttonPanel);
 
     }
 
@@ -148,6 +153,7 @@ public class Driver extends JFrame {
                 classLinkFile = fileChooser.getSelectedFile();
                 txtClasslink.setText(classLinkFile.getAbsolutePath());
                 databaseHelper.loadQRCodes(classLinkFile);
+                tableModel.tableUpdated();
             }
         }
         else if(event.getSource() == btnFocusFile){
@@ -167,6 +173,9 @@ public class Driver extends JFrame {
         }
     }
 
+    private void repaintPanel(){
+        this.repaint();
+    }
 
     public static void main(String[] args){
         Driver driver = new Driver();

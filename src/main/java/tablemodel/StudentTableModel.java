@@ -23,8 +23,9 @@ public class StudentTableModel extends AbstractTableModel {
     }
 
     public void tableUpdated(){
-        this.fireTableStructureChanged();
+        this.fireTableDataChanged();
     }
+
 
     public Object getValueAt(int rowIndex, int columnIndex) {
         Object object = null;
@@ -57,6 +58,11 @@ public class StudentTableModel extends AbstractTableModel {
             object = students.get(rowIndex).getIdPic();
         }
         return object;
+    }
+
+    public Student getStudent(int row){
+        Student student = students.get(row);
+        return student;
     }
 
     public String getColumnName(int col){

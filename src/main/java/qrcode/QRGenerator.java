@@ -18,7 +18,6 @@ public class QRGenerator {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
-        byte[] pngBytes = outputStream.toByteArray();
-        return pngBytes;
+        return outputStream.toByteArray();
     }
 }

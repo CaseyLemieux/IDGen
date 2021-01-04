@@ -79,7 +79,7 @@ public class DatabaseHelper {
                     "VALUES('" + student.getStudentID() + "', '" + student.getFirstName().replaceAll("'", "''") + "', '" + student.getLastName().replaceAll("'", "''") + "', '" + student.getEmail() +"')";
             statement.execute(query);
             statement.close();
-            System.out.println("Student Added");
+            students.add(student);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -89,28 +89,8 @@ public class DatabaseHelper {
         return this.students;
     }
 
-    private void updateQRCode(Student student){
-        try {
-            String query = "UPDATE STUDENTS SET QrCode = ? " + "WHERE StudentID = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, student.getQrCode());
-            statement.setString(2, student.getStudentID());
-            statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-    private void updateIDPic(Student student){
-        try{
-            String query = "UPDATE STUDENTS SET IdPic = ? " + "WHERE StudentID = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setBytes(1, student.getIdPic());
-            statement.setString(2, student.getStudentID());
-            statement.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    public int getNumberOfStudents(){
+        return numberOfStudets;
     }
 
     public void loadStudents(File studentsFile) {
@@ -135,32 +115,38 @@ public class DatabaseHelper {
         }
     }
 
-    public int getNumberOfStudets(){
-        return numberOfStudets;
+    private void updateIDPic(Student student){
+        try{
+            String query = "UPDATE STUDENTS SET IdPic = ? " + "WHERE StudentID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setBytes(1, student.getIdPic());
+            statement.setString(2, student.getStudentID());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public void loadIDs(File focusFile){
         try(PDDocument doc = PDDocument.load(focusFile)){
             PDFTextStripper stripper = new PDFTextStripper();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Splitter splitter = new Splitter();
             List<PDDocument> pages = splitter.split(doc);
-            int num = 1;
             for(PDDocument page : pages){
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 page.save(outputStream);
                 byte[] bytes = outputStream.toByteArray();
-                System.out.println(Arrays.toString(bytes));
+                //System.out.println(Arrays.toString(bytes));
                 String text = stripper.getText(page);
                 String[] splitText = text.split("\\W+");
                 String id = splitText[splitText.length - 1];
-
+                System.out.println(id);
                 for(Student student : students){
                     //System.out.println(id);
-                    if(id.equals(student.getStudentID())){
+                    if(id.equalsIgnoreCase(student.getStudentID())){
                         student.setIdPic(bytes);
                         updateIDPic(student);
-                        //System.out.println("Added ID " + num);
-                        num++;
+                        System.out.println(id + " " + student.getStudentID());
                     } else {
                         //System.out.println("Error in ID Parse");
                     }
@@ -171,13 +157,25 @@ public class DatabaseHelper {
         }
     }
 
+    private void updateQRCode(Student student){
+        try {
+            String query = "UPDATE STUDENTS SET QrCode = ? " + "WHERE StudentID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, student.getQrCode());
+            statement.setString(2, student.getStudentID());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public void loadQRCodes(File classLink) {
         ArrayList<Student> studentsQRData;
         excelReader.openFile(classLink);
         studentsQRData = excelReader.getStudentsQRData();
         for(Student qrStudent : studentsQRData){
             for(Student dbStudent : students){
-                if(qrStudent.getEmail().equals(dbStudent.getEmail())){
+                if(qrStudent.getEmail().equalsIgnoreCase(dbStudent.getEmail())){
                     dbStudent.setQrCode(qrStudent.getQrCode());
                     updateQRCode(dbStudent);
                 }
