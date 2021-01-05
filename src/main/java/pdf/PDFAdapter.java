@@ -24,7 +24,7 @@ public class PDFAdapter {
     }
 
     public void createPDFFile(Student student){
-        String outFile = "C:\\Users\\lemie\\OneDrive\\Desktop\\ID Gen\\" + student.getLastName() + student.getFirstName() + "ID.pdf";
+        String outFile = "C:\\Users\\clemieux\\Desktop\\ID GEN Program\\" + student.getLastName() + student.getFirstName() + "ID.pdf";
          try {
              QRGenerator generator = new QRGenerator();
              byte[] data = student.getIdPic();

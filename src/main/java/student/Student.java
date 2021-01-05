@@ -8,19 +8,21 @@ public class Student {
     private String email;
     private String displayName;
     private String qrCode;
+    private String gradeLevel;
     private byte[] idPic;
 
     public Student(){
 
     }
 
-    public Student(String studentID, String firstName, String lastName, String email, String displayName, String qrCode, byte[] idPic){
+    public Student(String studentID, String firstName, String lastName, String email, String displayName, String qrCode, String gradeLevel, byte[] idPic){
         this.studentID = studentID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.displayName = displayName;
         this.qrCode = qrCode;
+        this.gradeLevel = gradeLevel;
         this.idPic = idPic;
     }
 
@@ -70,6 +72,14 @@ public class Student {
 
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
+    }
+
+    public String getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(String gradeLevel) {
+        this.gradeLevel = gradeLevel;
     }
 
     public byte[] getIdPic() {

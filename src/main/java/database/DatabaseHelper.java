@@ -64,7 +64,7 @@ public class DatabaseHelper {
         try {
             statement = connection.createStatement();
             String query = "CREATE TABLE STUDENTS( StudentID VARCHAR(10) NOT NULL, FirstName VARCHAR(25) NOT NULL, LastName VARCHAR(25) NOT NULL," +
-                    " Email VARCHAR(50) NOT NULL, DisplayName VARCHAR(50), QrCode VARCHAR(200), IdPic blob, PRIMARY KEY (StudentID))";
+                    " Email VARCHAR(50) NOT NULL, DisplayName VARCHAR(50), QrCode VARCHAR(200), GradeLevel VARCHAR(4), IdPic blob, PRIMARY KEY (StudentID))";
             statement.execute(query);
             statement.close();
         } catch (SQLException throwables) {
@@ -101,8 +101,9 @@ public class DatabaseHelper {
                 Student student = new Student();
                 student.setFirstName(row[0]);
                 student.setLastName(row[1]);
-                student.setStudentID(row[3]);
-                student.setEmail(row[4]);
+                student.setStudentID(row[2]);
+                student.setEmail(row[3]);
+                student.setGradeLevel(row[4]);
                 addStudent(student);
                 //System.out.println(student.toString());
             }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class StudentTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"Student ID", "First Name", "Last Name", "Email", "Display Name", "QR Code", "ID Bytes"};
+    private String[] columnNames = {"Student ID", "First Name", "Last Name", "Email", "Display Name", "QR Code", "Grade Level", "ID Bytes"};
     private ArrayList<Student> students;
 
     public StudentTableModel(ArrayList<Student> students){
@@ -54,6 +54,10 @@ public class StudentTableModel extends AbstractTableModel {
             object = students.get(rowIndex).getQrCode();
         }
         else if(columnIndex == 6){
+            //Student Grade Level
+            object = students.get(rowIndex).getGradeLevel();
+        }
+        else if(columnIndex == 7){
             //ID Bytes
             object = students.get(rowIndex).getIdPic();
         }
