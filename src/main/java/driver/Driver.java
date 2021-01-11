@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -104,6 +105,8 @@ public class Driver extends JFrame {
         JButton btnExportGrade = new JButton("Export Grade Level");
         JButton btnExportSelected = new JButton("Export Selected Student");
         JButton btnloadStudents = new JButton("Load Students");
+        JButton btnPrintSelectedStudent = new JButton("Print Student");
+        JButton btnPrintGradeLevel = new JButton("Print Grade Level");
         JLabel lblNumberOfStudents = new JLabel("Total Students: ");
         JLabel lblTotalStudents = new JLabel(databaseHelper.getNumberOfStudents() + " ");
         JLabel lblStudentFile = new JLabel("Student Info File: ");
@@ -118,10 +121,9 @@ public class Driver extends JFrame {
         btnloadStudents.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               databaseHelper.loadStudents(studentsFile);
-               tableModel.tableUpdated();
-               studentTable.repaint();
-              //bottomPanel.repaint();
+                databaseHelper.loadStudents(studentsFile);
+                tableModel.tableUpdated();
+                studentTable.repaint();
                 lblTotalStudents.setText(databaseHelper.getNumberOfStudents() + " ");
                 bottomPanel.repaint();
                repaintPanel();
@@ -131,8 +133,30 @@ public class Driver extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Student student = tableModel.getStudent(studentTable.getSelectedRow());
-                PDFAdapter adapter = new PDFAdapter();
-                adapter.createPDFFile(student);
+                if(student.getIdPic() == null || student.getQrCode() == null){
+                    JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Student must have a ID and QR Code to export");
+                } else{
+                    PDFAdapter adapter = new PDFAdapter();
+                    adapter.exportStudentPDF(student);
+                }
+            }
+        });
+        btnExportGrade.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Object[] choices = {"PK", "KG", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"};
+                String choice = (String) JOptionPane.showInputDialog(bottomPanel.getRootPane(), "Please select a Grade Level to export",
+                        "Select a Grade Level", JOptionPane.PLAIN_MESSAGE, null,choices, choices[0]);
+                if(choice != null && choice.length() > 0){
+
+                }
+            }
+        });
+        btnPrintSelectedStudent.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PrinterJob job = PrinterJob.getPrinterJob();
+                boolean doPrint = job.printDialog();
             }
         });
         bottomPanel.add(lblNumberOfStudents);
@@ -143,6 +167,8 @@ public class Driver extends JFrame {
         bottomPanel.add(btnloadStudents);
         bottomPanel.add(btnExportSelected);
         bottomPanel.add(btnExportGrade);
+        bottomPanel.add(btnPrintSelectedStudent);
+        bottomPanel.add(btnPrintGradeLevel);
 
     }
 

@@ -11,7 +11,6 @@ import qrcode.QRGenerator;
 import student.Student;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class PDFAdapter {
 
     }
 
-    public void createPDFFile(Student student){
+    public void exportStudentPDF(Student student){
         String outFile = "C:\\Users\\clemieux\\Desktop\\ID GEN Program\\" + student.getLastName() + student.getFirstName() + "ID.pdf";
          try {
              QRGenerator generator = new QRGenerator();
@@ -45,6 +44,10 @@ public class PDFAdapter {
         } catch (IOException | WriterException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void exportGradeLevelPDF(){
 
     }
 }

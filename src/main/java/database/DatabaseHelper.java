@@ -12,22 +12,25 @@ import student.Student;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+//TODO: Rework the Database creation to allow the user to specify where they want to save the derby database on startup.
 
 
 public class DatabaseHelper {
 
     private final String dbPath = "jdbc:derby:studentDB;create=true";
+    private final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
     private Connection connection;
     private Statement statement;
     private ExcelReader excelReader;
     private PDFAdapter pdfAdapter;
     private ArrayList<Student> students;
-    private int numberOfStudets;
+    private int numberOfStudents;
     public DatabaseHelper() {
 
         try {
+            Class.forName(driver);
             connection = DriverManager.getConnection(dbPath);
             ResultSet resultSet = connection.getMetaData().getTables(null, "APP", "STUDENTS", null);
             if (!resultSet.next()) {
@@ -48,12 +51,13 @@ public class DatabaseHelper {
                 student.setEmail(returnSet.getString(4));
                 student.setDisplayName(returnSet.getString(5));
                 student.setQrCode(returnSet.getString(6));
-                student.setIdPic(returnSet.getBytes(7));
+                student.setGradeLevel(returnSet.getString(7));
+                student.setIdPic(returnSet.getBytes(8));
                 students.add(student);
-                numberOfStudets++;
+                numberOfStudents++;
             }
 
-        } catch (SQLException throwables) {
+        } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
         excelReader = new ExcelReader();
@@ -75,8 +79,9 @@ public class DatabaseHelper {
     private void addStudent(Student student) {
         try {
             statement = connection.createStatement();
-            String query = "INSERT INTO STUDENTS(StudentID, FirstName, LastName, Email) " +
-                    "VALUES('" + student.getStudentID() + "', '" + student.getFirstName().replaceAll("'", "''") + "', '" + student.getLastName().replaceAll("'", "''") + "', '" + student.getEmail() +"')";
+            String query = "INSERT INTO STUDENTS(StudentID, FirstName, LastName, Email, GradeLevel) " +
+                    "VALUES('" + student.getStudentID() + "', '" + student.getFirstName().replaceAll("'", "''") + "', '" +
+                    student.getLastName().replaceAll("'", "''") + "', '" + student.getEmail() +"', '" + student.getGradeLevel() +"')";
             statement.execute(query);
             statement.close();
             students.add(student);
@@ -90,7 +95,7 @@ public class DatabaseHelper {
     }
 
     public int getNumberOfStudents(){
-        return numberOfStudets;
+        return numberOfStudents;
     }
 
     public void loadStudents(File studentsFile) {
@@ -170,6 +175,18 @@ public class DatabaseHelper {
         }
     }
 
+    private void updateDisplayName(Student student){
+        try{
+            String query = "UPDATE STUDENTS SET DisplayName = ?" + "WHERE StudentID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, student.getDisplayName());
+            statement.setString(2, student.getStudentID());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public void loadQRCodes(File classLink) {
         ArrayList<Student> studentsQRData;
         excelReader.openFile(classLink);
@@ -178,7 +195,9 @@ public class DatabaseHelper {
             for(Student dbStudent : students){
                 if(qrStudent.getEmail().equalsIgnoreCase(dbStudent.getEmail())){
                     dbStudent.setQrCode(qrStudent.getQrCode());
+                    dbStudent.setDisplayName(qrStudent.getDisplayName());
                     updateQRCode(dbStudent);
+                    updateDisplayName(dbStudent);
                 }
             }
         }

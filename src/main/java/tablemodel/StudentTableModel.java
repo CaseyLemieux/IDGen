@@ -59,7 +59,9 @@ public class StudentTableModel extends AbstractTableModel {
         }
         else if(columnIndex == 7){
             //ID Bytes
-            object = students.get(rowIndex).getIdPic();
+            if(students.get(rowIndex).getIdPic() != null && students.get(rowIndex).getIdPic().length > 0){
+                object = "Uploaded";
+            }
         }
         return object;
     }
