@@ -3,7 +3,9 @@ package driver;
 
 
 import database.DatabaseHelper;
+import org.apache.pdfbox.printing.PDFPageable;
 import pdf.PDFAdapter;
+import printing.PrintAdapter;
 import student.Student;
 import tablemodel.StudentTableModel;
 
@@ -11,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.util.ArrayList;
@@ -134,8 +137,7 @@ public class Driver extends JFrame {
             public void actionPerformed(ActionEvent e) {
                if(studentTable.getSelectedRow() == -1){
                    JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Must select a row before exporting!");
-               }
-               else{
+               } else{
                    Student student = tableModel.getStudent(studentTable.getSelectedRow());
                    if(student.getIdPic() == null || student.getQrCode() == null){
                        JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Student must have a ID and QR Code to export!");
@@ -163,8 +165,26 @@ public class Driver extends JFrame {
         btnPrintSelectedStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PrinterJob job = PrinterJob.getPrinterJob();
-                boolean doPrint = job.printDialog();
+                if(studentTable.getSelectedRow() == -1){
+                    JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Must select a row before printing!");
+                } else{
+                    Student student = tableModel.getStudent(studentTable.getSelectedRow());
+                    if(student.getIdPic() == null) {
+                        JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Student must have an ID Image to print!");
+                    } else {
+                        PrinterJob job = PrinterJob.getPrinterJob();
+                        PDFAdapter adapter = new PDFAdapter();
+                        job.setPageable(new PDFPageable(adapter.getStudentPDF(student)));
+                        boolean doPrint = job.printDialog();
+                        if(doPrint){
+                            try {
+                                job.print();
+                            } catch (PrinterException exception){
+                                JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "The Print Job did not complete successfully"  );
+                            }
+                        }
+                    }
+                }
             }
         });
         bottomPanel.add(lblNumberOfStudents);

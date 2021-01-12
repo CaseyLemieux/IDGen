@@ -49,27 +49,27 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.15.2.0</version>
+            <version>10.14.2.0</version>
             <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derbytools -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbytools</artifactId>
-            <version>10.15.2.0</version>
+            <version>10.14.2.0</version>
             <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
-            <version>10.15.2.0</version>
+            <version>10.14.2.0</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.15.2.0</version>
+            <version>10.14.2.0</version>
             <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyshared -->
@@ -100,7 +100,7 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <finalName>ServiceCreate</finalName>
+                    <finalName>ID Gen Program</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
