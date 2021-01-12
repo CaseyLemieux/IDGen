@@ -98,6 +98,16 @@ public class DatabaseHelper {
         return numberOfStudents;
     }
 
+    public ArrayList<Student> getGradeLevel(String gradeLevel){
+        ArrayList<Student> level = new ArrayList<>();
+        for(Student student : students){
+            if(student.getGradeLevel().equalsIgnoreCase(gradeLevel)){
+                level.add(student);
+            }
+        }
+        return level;
+    }
+
     public void loadStudents(File studentsFile) {
         try (CSVReader reader = new CSVReader(new FileReader(studentsFile))) {
             reader.skip(1);

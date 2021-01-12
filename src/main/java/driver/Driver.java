@@ -132,13 +132,19 @@ public class Driver extends JFrame {
         btnExportSelected.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Student student = tableModel.getStudent(studentTable.getSelectedRow());
-                if(student.getIdPic() == null || student.getQrCode() == null){
-                    JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Student must have a ID and QR Code to export");
-                } else{
-                    PDFAdapter adapter = new PDFAdapter();
-                    adapter.exportStudentPDF(student);
-                }
+               if(studentTable.getSelectedRow() == -1){
+                   JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Must select a row before exporting!");
+               }
+               else{
+                   Student student = tableModel.getStudent(studentTable.getSelectedRow());
+                   if(student.getIdPic() == null || student.getQrCode() == null){
+                       JOptionPane.showMessageDialog(bottomPanel.getRootPane(), "Student must have a ID and QR Code to export!");
+                   } else{
+                       PDFAdapter adapter = new PDFAdapter();
+                       adapter.exportStudentPDF(student);
+                   }
+               }
+
             }
         });
         btnExportGrade.addActionListener(new ActionListener() {
@@ -148,7 +154,9 @@ public class Driver extends JFrame {
                 String choice = (String) JOptionPane.showInputDialog(bottomPanel.getRootPane(), "Please select a Grade Level to export",
                         "Select a Grade Level", JOptionPane.PLAIN_MESSAGE, null,choices, choices[0]);
                 if(choice != null && choice.length() > 0){
-
+                    ArrayList<Student> gradeLevel = databaseHelper.getGradeLevel(choice);
+                    PDFAdapter adapter = new PDFAdapter();
+                    adapter.exportGradeLevelPDF(gradeLevel);
                 }
             }
         });
